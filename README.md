@@ -1,7 +1,7 @@
 ## ticks
 ###### Convert period and type representing a system's native tick count
 
-### Usage
+## Usage
 Converting the tick representation for a supported system is done via template parameters:
 
 ```c++
