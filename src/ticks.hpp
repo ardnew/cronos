@@ -75,6 +75,10 @@ class ticker {
     return ticker<std::chrono::duration<Rep, Period>>::now();
   }
 
+  static constexpr auto ticks() noexcept {
+    return now().time_since_epoch().count();
+  }
+
   //// POSIX C time_t API
 
   static constexpr std::time_t to_time_t(const time_point &t = now()) noexcept {
