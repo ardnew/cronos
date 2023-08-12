@@ -1,6 +1,20 @@
 // Based on the example for std::chrono::steady_clock::now here:
 //   https://en.cppreference.com/w/cpp/chrono/steady_clock/now
 
+// Expected output from building and running this example:
+//
+//   |  $ cd examples/exec-duration
+//   |  $ make
+//   | g++ -I../../src -g -Wall -std=gnu++17   -c -o main.o main.cpp
+//   | g++  -o exec-duration main.o
+//   |  $ ./exec-duration
+//   | Time to iteratively allocate 100000 vectors of 1000 ints:
+//   |                  115.626 % of 1s
+//   |                     1156 ms
+//   | Look, no long-winded call to narrow-cast:
+//   |         1212134307664108 ns
+//   |               1212134307 ms
+
 #include <chrono>
 #include <cstdint>
 #include <iomanip>
@@ -8,7 +22,7 @@
 #include <numeric>
 #include <vector>
 
-#include <ticks.hpp>
+#include <ticks.h>
 
 // Measure the time it takes to iteratively allocate:
 //  {repeat} × std::vector<int>'s with {length} elements
