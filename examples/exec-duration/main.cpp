@@ -2,6 +2,7 @@
 //   https://en.cppreference.com/w/cpp/chrono/steady_clock/now
 
 #include <chrono>
+#include <cstdint>
 #include <iomanip>
 #include <iostream>
 #include <numeric>
@@ -45,6 +46,14 @@ int main() {
           end - start);
   std::cout << "Time to iteratively allocate " << repeat << " vectors of "
             << length << " ints:\n"
-            << std::setw(9) << pctDiff.count() << " % of 1s\n"
-            << std::setw(9) << msDiff.count() << " ms\n";
+            << std::setw(24) << pctDiff.count() << " % of 1s\n"
+            << std::setw(24) << msDiff.count() << " ms\n";
+
+  // Instead of calling duration_cast manually, you can also give the same
+  // template arguments to any type of tick's now() or ticks() methods:
+  using nanosecs = ticker<std::chrono::nanoseconds>;
+
+  std::cout << "Look, no long-winded call to narrow-cast:\n"
+            << std::setw(24) << nanosecs::ticks() << " ns\n"
+            << std::setw(24) << nanosecs::ticks<int, std::milli>() << " ms\n";
 }
