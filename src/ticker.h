@@ -1,5 +1,5 @@
-#ifndef ticks_hpp
-#define ticks_hpp
+#ifndef ticker_h
+#define ticker_h
 
 #include <chrono>
 #include <functional>
@@ -22,8 +22,15 @@ class ticker {
   using period = std::milli;
 
 #else
-  static constexpr auto ticks = []() {
-    return std::chrono::steady_clock::now().time_since_epoch().count();
+  // C++17 allows constexpr with lambda functions (instead masquerading around
+  // with a functor).
+  //static constexpr auto ticks = []() {
+  //  return std::chrono::steady_clock::now().time_since_epoch().count();
+  //};
+  struct ticks {
+    constexpr auto operator()() const noexcept {
+      return std::chrono::steady_clock::now().time_since_epoch().count();
+    }
   };
   using period = std::chrono::steady_clock::period;
 
@@ -39,7 +46,9 @@ class ticker {
   //
   // For unhandled platforms, the default implementation returns current tick
   // count using std::chrono::steady_clock (C++11).
-  static constexpr auto now() noexcept { return time_point(duration(ticks())); }
+  static auto now() noexcept -> time_point {
+    return time_point(duration(ticks()));
+  }
 };
 }  // namespace native
 
@@ -64,23 +73,34 @@ class ticker {
 
   // Return current time using the ticker's declared time representation, which
   // is converted from the target's native representation.
-  static constexpr auto now() noexcept {
+  static constexpr auto now() noexcept -> time_point {
     return time_point(std::chrono::duration_cast<duration>(
         native::ticker::duration(native::ticker::ticks())));
   }
 
   // Return current time using the given parameterized template representation.
   template <typename Rep, typename Period>
-  static constexpr auto now() noexcept {
+  static constexpr auto now() noexcept -> std::chrono::time_point<
+      ticker<std::chrono::duration<Rep, Period>>,
+      std::chrono::duration<Rep, Period>> {
     return ticker<std::chrono::duration<Rep, Period>>::now();
   }
 
-  static constexpr auto ticks() noexcept {
-    return now().time_since_epoch().count();
+  static constexpr auto uptime() noexcept -> duration {
+    return now().time_since_epoch();
   }
 
   template <typename Rep, typename Period>
-  static constexpr auto ticks() noexcept {
+  static constexpr auto uptime() noexcept -> std::chrono::duration<Rep, Period> {
+    return ticker<std::chrono::duration<Rep, Period>>::uptime();
+  }
+
+  static constexpr auto ticks() noexcept -> rep {
+    return uptime().count();
+  }
+
+  template <typename Rep, typename Period>
+  static constexpr auto ticks() noexcept -> Rep {
     return ticker<std::chrono::duration<Rep, Period>>::ticks();
   }
 
@@ -90,9 +110,9 @@ class ticker {
     return std::chrono::duration_cast<duration_c>(t.time_since_epoch()).count();
   }
 
-  static constexpr auto from_time_t(std::time_t t) noexcept {
+  static constexpr auto from_time_t(std::time_t t) noexcept -> time_point {
     return time_point(duration_c(t));
   }
 };
 
-#endif // ticks_hpp
+#endif // ticker_h
