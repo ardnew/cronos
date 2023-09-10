@@ -22,7 +22,7 @@
 #include <numeric>
 #include <vector>
 
-#include <ticks.h>
+#include <cronos.h>
 
 // Measure the time it takes to iteratively allocate:
 //  {repeat} × std::vector<int>'s with {length} elements
@@ -35,14 +35,14 @@ volatile int sink;
 
 int main() {
   // Record start time in native ticks
-  auto start = ticker<>::now();
+  auto start = cronos<>::now();
   for (auto i = 0ULL; i < repeat; ++i) {
     // do some work
     std::vector<int> v(length, 42);
     sink = std::accumulate(v.begin(), v.end(), 0u);
   }
   // Record end time in native ticks
-  auto end = ticker<>::now();
+  auto end = cronos<>::now();
 
   // Now we can express the time elapsed in any arbitrary unit of time and data
   // type we prefer.
@@ -65,7 +65,7 @@ int main() {
 
   // Instead of calling duration_cast manually, you can also give the same
   // template arguments to any type of tick's now() or ticks() methods:
-  using nanosecs = ticker<std::chrono::nanoseconds>;
+  using nanosecs = cronos<std::chrono::nanoseconds>;
 
   std::cout << "Look, no long-winded call to narrow-cast:\n"
             << std::setw(24) << nanosecs::ticks() << " ns\n"
