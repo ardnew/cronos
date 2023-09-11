@@ -1,4 +1,4 @@
-## cronos
+## cronos[^1]
 ###### A std::chrono wrapper for target system's native tick count
 
 This abstraction allows applications to hide the exact data type representation and period of the system's native ticker.
@@ -17,7 +17,7 @@ The default C++ API at the bottom of the table is used for all other platforms.
 |:-:|:----:|:-:|:------------:|:----:|
 |Arduino|`Arduino.h`|`unsigned long millis()`|`unsigned long`|Milliseconds|
 |ESP-IDF|`esp_timer.h`|`int64_t esp_timer_get_time(void)`|`int64_t`|Microseconds|
-|C++|`std::chrono`|`std::chrono::steady_clock`|`int64_t`|Microseconds[^1]|
+|C++|`std::chrono`|`std::chrono::steady_clock`|`int64_t`|Microseconds[^2]|
 
 #### Integration
 ###### Manual<sub>**_A_**</sub>
@@ -36,4 +36,5 @@ This [library](library.properties) conforms to the [Arduino Library Specificatio
 ###### ESP-IDF <sub>**_TODO_**</sub>
 - [ ] _Add support files required to implement an ESP-IDF library/component_.
 
-[^1]: Actual resolution may be less. The LSBs of the 64-bit system tick count will be padded with `0` if the system does not support microsecond resolution.
+[^1]: Not a typo; an empathetic nod to [Jesús Gris](https://en.wikipedia.org/wiki/Cronos_(film)).
+[^2]: Actual resolution may be less. The LSBs of the 64-bit system tick count will be padded with `0` if the system does not support microsecond resolution.
