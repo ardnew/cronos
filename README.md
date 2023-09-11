@@ -19,4 +19,21 @@ The default C++ API at the bottom of the table is used for all other platforms.
 |ESP-IDF|`esp_timer.h`|`int64_t esp_timer_get_time(void)`|`int64_t`|Microseconds|
 |C++|`std::chrono`|`std::chrono::steady_clock`|`int64_t`|Microseconds[^1]|
 
+#### Integration
+###### Manual<sub>**_A_**</sub>
+Fetch repository, add `#include <cronos.h>` to your sources, and modify your compiler's includes — with a [Makefile, for example](examples/exec-duration/Makefile):
+
+```Makefile
+CFLAGS += -I/foo/cronos/src -g -Wall
+CXXFLAGS += $(CFLAGS) -std=gnu++17
+```
+###### Manual<sub>**_B_**</sub>
+Fetch repository, copy [`src/cronos.h`](src/cronos.h) into your project, add `#include "cronos.h"` to your sources.
+
+###### Arduino
+This [library](library.properties) conforms to the [Arduino Library Specification (1.5)](https://arduino.github.io/arduino-cli/0.34/library-specification/). Install using the Library Manager via [IDE](https://github.com/arduino/arduino-ide) (or [GUI](https://github.com/arduino/Arduino)) or with command `arduino-cli lib install cronos` using the [CLI](https://github.com/arduino/arduino-cli).
+
+###### ESP-IDF <sub>**_TODO_**</sub>
+- [ ] _Add support files required to implement an ESP-IDF library/component_.
+
 [^1]: Actual resolution may be less. The LSBs of the 64-bit system tick count will be padded with `0` if the system does not support microsecond resolution.
