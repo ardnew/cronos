@@ -10,7 +10,8 @@ class ticker {
  public:
 #if defined(ESP_PLATFORM)
 #include <esp_timer.h>  // ESP32 (FreeRTOS) ticks are in microseconds.
-  static constexpr auto count = esp_timer_get_time;
+#define fastcode IRAM_ATTR /* __attribute__((section(".iram1.text"))) */
+  static constexpr auto fastcode count = esp_timer_get_time;
   using period = std::micro;
 
 #elif defined(ARDUINO)
@@ -18,13 +19,15 @@ class ticker {
   // defined. So be sure to check it last (but before the default C++
   // implementation).
 #include <Arduino.h>  // Arduino ticks are in milliseconds.
-  static constexpr auto count = millis;
+#define fastcode
+  static constexpr auto fastcode count = millis;
   using period = std::milli;
 
 #else
+#define fastcode
   // C++17 allows constexpr with lambda functions (instead of masquerading
   // around as a functor).
-  static constexpr auto count = []() {
+  static constexpr auto fastcode count = []() {
     return std::chrono::steady_clock::now().time_since_epoch().count();
   };
   using period = std::chrono::steady_clock::period;
@@ -41,7 +44,7 @@ class ticker {
   //
   // For unhandled platforms, the default implementation returns current tick
   // count using std::chrono::steady_clock (C++11).
-  static auto now() noexcept -> time_point {
+  static auto fastcode now() noexcept -> time_point {
     return time_point(duration(count()));
   }
 };
