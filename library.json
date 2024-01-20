@@ -16,7 +16,7 @@
     "url": "https://github.com/ardnew/cronos.git"
   },
   "license": "MIT",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "headers": [
     "cronos.hpp"
   ],
