@@ -5,12 +5,18 @@
 #include <functional>
 #include <iostream>
 
+#if defined(ESP_PLATFORM)
+#include <esp_timer.h>
+#elif defined(ARDUINO)
+#include <Arduino.h>
+#endif
+
 namespace native {
 class ticker {
  public:
 #if defined(ESP_PLATFORM)
-#include <esp_timer.h>  // ESP32 (FreeRTOS) ticks are in microseconds.
 #define fastcode IRAM_ATTR /* __attribute__((section(".iram1.text"))) */
+  // ESP32 (FreeRTOS) ticks are in microseconds.
   static constexpr auto fastcode count = esp_timer_get_time;
   using period = std::micro;
 
@@ -18,8 +24,8 @@ class ticker {
   // It's likely there are many generic platforms that will have ARDUINO
   // defined. So be sure to check it last (but before the default C++
   // implementation).
-#include <Arduino.h>  // Arduino ticks are in milliseconds.
 #define fastcode
+  // Arduino ticks are in milliseconds.
   static constexpr auto fastcode count = millis;
   using period = std::milli;
 
