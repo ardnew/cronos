@@ -30,6 +30,25 @@ CXXFLAGS += $(CFLAGS) -std=gnu++17
 ###### Manual<sub>**_B_**</sub>
 Fetch repository, copy [`src/cronos.h`](src/cronos.h) into your project, add `#include "cronos.h"` to your sources.
 
+###### PlatformIO
+For bare-metal applications using `platformio.ini`, add the following to `lib_deps` for your environment:
+
+```ini
+[env]
+lib_deps =
+    https://github.com/ardnew/cronos.git#v0.2.0
+```
+
+For library project  using `library.json`, add the following to "dependencies":
+
+```json
+{
+  "dependencies": {
+    "ardnew/cronos": "^0.2.0"
+  }
+}
+```
+
 ###### Arduino
 This [library](library.properties) conforms to the [Arduino Library Specification (1.5)](https://arduino.github.io/arduino-cli/0.34/library-specification/). Install using the Library Manager via [IDE](https://github.com/arduino/arduino-ide) (or [GUI](https://github.com/arduino/Arduino)) or with command `arduino-cli lib install cronos` using the [CLI](https://github.com/arduino/arduino-cli).
 
