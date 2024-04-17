@@ -36,7 +36,7 @@ For bare-metal applications using `platformio.ini`, add the following to `lib_de
 ```ini
 [env]
 lib_deps =
-    https://github.com/ardnew/cronos.git#v0.2.0
+    https://github.com/ardnew/cronos.git#v0.2.1
 ```
 
 For library project  using `library.json`, add the following to "dependencies":
@@ -44,7 +44,7 @@ For library project  using `library.json`, add the following to "dependencies":
 ```json
 {
   "dependencies": {
-    "ardnew/cronos": "^0.2.0"
+    "ardnew/cronos": "^0.2.1"
   }
 }
 ```
