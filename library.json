@@ -1,8 +1,8 @@
 {
   "name": "cronos",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A std::chrono wrapper for target system's native tick count.",
-  "keywords": "timer, chrono, std, std::chrono, tick, ticks, uptime, clock, c++17, constexpr, library",
+  "keywords": "timer, chrono, std, chrono, tick, ticks, uptime, clock, c++17, constexpr, library",
   "homepage": "https://github.com/ardnew/cronos",
   "authors": [
     {
